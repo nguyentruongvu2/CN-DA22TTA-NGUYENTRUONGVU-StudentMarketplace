@@ -121,6 +121,8 @@ const PostDetail = () => {
         toast.success(response.tin_nhan || "Bình luận thành công");
         setPage(1);
         fetchComments();
+        // Fetch lại post để cập nhật commentCount
+        fetchPostDetail();
       } else {
         toast.error(response.tin_nhan || "Không thể gửi bình luận");
       }
@@ -138,6 +140,8 @@ const PostDetail = () => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     setPage(1);
     await fetchComments(false, 1);
+    // Fetch lại post để cập nhật commentCount
+    await fetchPostDetail();
     console.log("✅ Refresh complete!");
   };
 

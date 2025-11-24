@@ -111,11 +111,9 @@ exports.createComment = async (req, res) => {
 
     await comment.save();
 
-    // Chỉ tăng commentsCount nếu là comment gốc (không phải reply)
-    if (!rootCommentId) {
-      post.commentsCount = (post.commentsCount || 0) + 1;
-      await post.save();
-    }
+    // Tăng commentCount cho cả comment gốc và reply
+    post.commentCount = (post.commentCount || 0) + 1;
+    await post.save();
 
     // Nếu có rating và là comment gốc (đánh giá người bán), cập nhật rating
     if (validRating && !rootCommentId) {
@@ -223,16 +221,28 @@ exports.deleteComment = async (req, res) => {
       });
     }
 
+    // Nếu là comment gốc, xóa cả replies
+    let deletedCount = 1;
+    if (!comment.parentCommentId) {
+      // Xóa tất cả replies của comment này
+      const deletedReplies = await Comment.deleteMany({
+        parentCommentId: id,
+      });
+      deletedCount += deletedReplies.deletedCount;
+    }
+
+    // Xóa comment chính
     await Comment.findByIdAndDelete(id);
 
-    // Giảm số bình luận
+    // Giảm commentCount theo số lượng đã xóa (comment + replies)
     await Post.findByIdAndUpdate(comment.postId, {
-      $inc: { commentsCount: -1 },
+      $inc: { commentCount: -deletedCount },
     });
 
     res.status(200).json({
       thành_công: true,
-      tin_nhan: "Bình luận đã được xóa thành công",
+      tin_nhan: `Đã xóa ${deletedCount} bình luận`,
+      deletedCount,
     });
   } catch (error) {
     console.error("Lỗi xóa bình luận:", error);
