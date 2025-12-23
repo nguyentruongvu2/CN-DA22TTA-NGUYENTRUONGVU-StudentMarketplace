@@ -103,11 +103,15 @@ app.use("/api/comments", require("./routes/commentRoutes"));
 app.use("/api/reports", require("./routes/reportRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/admin/stats", require("./routes/statsRoutes"));
-app.use("/api/admin/audit-logs", require("./routes/auditLogRoutes"));
+// Audit logs removed: route deleted
+// Categories, PostTypes, Filters routes
+app.use("/api/categories", require("./routes/categoryRoutes"));
+app.use("/api/post-types", require("./routes/postTypeRoutes"));
+app.use("/api/filters", require("./routes/filterRoutes"));
 // Upload routes
 app.use("/api/upload", require("./routes/uploadRoutes"));
 
-// Kiểm tra sức khỏe server
+// Kiểm tra server
 app.get("/api/health", (req, res) => {
   res.json({ trang_thai: "Máy chủ đang chạy" });
 });

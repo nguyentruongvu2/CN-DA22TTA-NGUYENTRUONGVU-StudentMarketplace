@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { userAPI } from "../services/apiService";
+import {
+  MdPerson,
+  MdEmail,
+  MdPhone,
+  MdLocationOn,
+  MdSchool,
+  MdBook,
+  MdChat,
+  MdEdit,
+  MdSave,
+  MdClose,
+  MdCamera,
+  MdInfo,
+  MdWarning,
+  MdCheckCircle,
+  MdKeyboardArrowDown,
+  MdArticle,
+  MdStar,
+  MdVisibility,
+} from "react-icons/md";
 
 const Profile = ({ user }) => {
   const [profile, setProfile] = useState(null);
@@ -169,9 +189,9 @@ const Profile = ({ user }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 text-lg">Đang tải hồ sơ...</p>
         </div>
       </div>
@@ -180,9 +200,11 @@ const Profile = ({ user }) => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-        <div className="text-center bg-white rounded-2xl shadow-lg p-8">
-          <div className="text-6xl mb-4">❌</div>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-4">
+            <MdClose className="text-4xl text-white" />
+          </div>
           <p className="text-gray-600 text-lg">Không thể tải hồ sơ</p>
         </div>
       </div>
@@ -190,12 +212,12 @@ const Profile = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8">
+    <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-3xl mx-auto px-4">
         {/* Profile Card */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
           {/* Cover */}
-          <div className="h-24 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+          <div className="h-24 bg-blue-600"></div>
 
           {/* Profile Content */}
           <div className="px-6 pb-6">
@@ -209,13 +231,13 @@ const Profile = ({ user }) => {
                     className="w-24 h-24 rounded-xl object-cover shadow-lg border-4 border-white -mt-12"
                   />
                 ) : (
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white -mt-12">
+                  <div className="w-24 h-24 bg-purple-600 rounded-xl flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white -mt-12">
                     {profile.fullName?.charAt(0).toUpperCase()}
                   </div>
                 )}
                 {isEditing && (
                   <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer hover:bg-blue-700 transition shadow-lg">
-                    📷
+                    <MdCamera className="w-4 h-4" />
                     <input
                       type="file"
                       accept="image/*"
@@ -234,28 +256,38 @@ const Profile = ({ user }) => {
               {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2"
                 >
-                  ✏️ Chỉnh sửa
+                  <MdEdit />
+                  Chỉnh sửa
                 </button>
               )}
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
               <div className="text-center">
+                <div className="flex items-center justify-center mb-1">
+                  <MdArticle className="text-2xl text-blue-600" />
+                </div>
                 <p className="text-2xl font-bold text-blue-600">
                   {profile.postsCount || 0}
                 </p>
                 <p className="text-xs text-gray-600">Bài đăng</p>
               </div>
               <div className="text-center">
+                <div className="flex items-center justify-center mb-1">
+                  <MdStar className="text-2xl text-yellow-600" />
+                </div>
                 <p className="text-2xl font-bold text-yellow-600">
                   {profile.rating || 0}
                 </p>
                 <p className="text-xs text-gray-600">Đánh giá</p>
               </div>
               <div className="text-center">
+                <div className="flex items-center justify-center mb-1">
+                  <MdVisibility className="text-2xl text-green-600" />
+                </div>
                 <p className="text-2xl font-bold text-green-600">
                   {profile.viewsCount || 0}
                 </p>
@@ -271,93 +303,100 @@ const Profile = ({ user }) => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        👤 Họ tên
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdPerson className="text-blue-600" />
+                        Họ tên
                       </label>
                       <input
                         type="text"
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        📧 Email
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdEmail className="text-blue-600" />
+                        Email
                       </label>
                       <input
                         type="email"
                         value={profile.email}
                         disabled
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-500 text-sm"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        📱 Số điện thoại
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdPhone className="text-blue-600" />
+                        Số điện thoại
                       </label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        📍 Địa chỉ
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdLocationOn className="text-blue-600" />
+                        Địa chỉ
                       </label>
                       <input
                         type="text"
                         name="address"
                         value={formData.address}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        🏫 Trường
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdSchool className="text-blue-600" />
+                        Trường
                       </label>
                       <input
                         type="text"
                         name="university"
                         value={formData.university}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        📚 Ngành học
+                      <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                        <MdBook className="text-blue-600" />
+                        Ngành học
                       </label>
                       <input
                         type="text"
                         name="major"
                         value={formData.major}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      💬 Giới thiệu
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-2">
+                      <MdChat className="text-blue-600" />
+                      Giới thiệu
                     </label>
                     <textarea
                       name="bio"
                       value={formData.bio}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm resize-none"
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-sm resize-none"
                       rows="3"
                       placeholder="Viết vài điều về bản thân..."
                     />
@@ -366,9 +405,10 @@ const Profile = ({ user }) => {
                   <div className="flex gap-3 pt-2">
                     <button
                       onClick={handleSaveProfile}
-                      className="flex-1 bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center gap-2"
                     >
-                      ✅ Lưu
+                      <MdSave />
+                      Lưu
                     </button>
                     <button
                       onClick={() => {
@@ -384,44 +424,52 @@ const Profile = ({ user }) => {
                           address: profile.address || "",
                         });
                       }}
-                      className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
+                      className="flex-1 bg-gray-400 hover:bg-gray-500 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center gap-2"
                     >
-                      ❌ Hủy
+                      <MdClose />
+                      Hủy
                     </button>
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  📋 Thông tin cá nhân
+                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                  <MdInfo className="text-blue-600" />
+                  Thông tin cá nhân
                 </h2>
-                <div className="space-y-4 mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-gray-100">
+                <div className="space-y-4 mb-8 bg-blue-50 p-6 rounded-2xl border-2 border-blue-200">
                   <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
-                    <span className="text-gray-600 font-medium">
-                      🏫 Trường:
+                    <span className="text-gray-600 font-medium flex items-center gap-2">
+                      <MdSchool className="text-blue-600" />
+                      Trường:
                     </span>
                     <span className="font-bold text-gray-800">
                       {profile.university || "—"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
-                    <span className="text-gray-600 font-medium">📚 Ngành:</span>
+                    <span className="text-gray-600 font-medium flex items-center gap-2">
+                      <MdBook className="text-blue-600" />
+                      Ngành:
+                    </span>
                     <span className="font-bold text-gray-800">
                       {profile.major || "—"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
-                    <span className="text-gray-600 font-medium">
-                      📱 Số điện thoại:
+                    <span className="text-gray-600 font-medium flex items-center gap-2">
+                      <MdPhone className="text-blue-600" />
+                      Số điện thoại:
                     </span>
                     <span className="font-bold text-gray-800">
                       {profile.phone || "—"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
-                    <span className="text-gray-600 font-medium">
-                      📍 Địa chỉ:
+                    <span className="text-gray-600 font-medium flex items-center gap-2">
+                      <MdLocationOn className="text-blue-600" />
+                      Địa chỉ:
                     </span>
                     <span className="font-bold text-gray-800">
                       {profile.address || "—"}
@@ -429,8 +477,9 @@ const Profile = ({ user }) => {
                   </div>
                   {profile.bio && (
                     <div className="p-4 bg-white rounded-lg border border-gray-200">
-                      <span className="text-gray-600 font-medium block mb-2">
-                        💬 Giới thiệu:
+                      <span className="text-gray-600 font-medium flex items-center gap-2 mb-2">
+                        <MdChat className="text-blue-600" />
+                        Giới thiệu:
                       </span>
                       <span className="font-medium text-gray-800">
                         {profile.bio}
@@ -441,9 +490,10 @@ const Profile = ({ user }) => {
 
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 rounded-xl font-bold text-lg hover:shadow-lg hover:scale-105 transform transition-all duration-300"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold text-base shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
                 >
-                  ✏️ Chỉnh sửa hồ sơ
+                  <MdEdit />
+                  Chỉnh sửa hồ sơ
                 </button>
               </>
             )}

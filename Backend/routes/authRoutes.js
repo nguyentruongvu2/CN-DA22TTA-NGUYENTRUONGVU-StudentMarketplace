@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authenticate } = require("../middleware/auth");
-const { auditMiddleware } = require("../middleware/auditMiddleware");
+// auditMiddleware removed
 const {
   register,
   login,
@@ -19,7 +19,7 @@ router.post("/register", register);
 // @route   POST /api/auth/login
 // @desc    Đăng nhập người dùng
 // @access  Công khai
-router.post("/login", auditMiddleware("login", "Đăng nhập hệ thống"), login);
+router.post("/login", login);
 
 // @route   POST /api/auth/verify-email/:token
 // @route   GET /api/auth/verify-email/:token
@@ -31,12 +31,7 @@ router.get("/verify-email/:token", verifyEmail);
 // @route   POST /api/auth/logout
 // @desc    Đăng xuất người dùng
 // @access  Riêng tư
-router.post(
-  "/logout",
-  authenticate,
-  auditMiddleware("logout", "Đăng xuất hệ thống"),
-  logout
-);
+router.post("/logout", authenticate, logout);
 
 // @route   POST /api/auth/forgot-password
 // @desc    Gửi email đặt lại mật khẩu

@@ -13,7 +13,7 @@ mkdir -p "$BACKUP_DIR"
 echo "✓ Thư mục backup: $BACKUP_DIR"
 
 # Danh sách collections cần backup
-collections=("users" "posts" "comments" "messages" "conversations" "reports" "warnings" "auditlogs")
+collections=("users" "posts" "comments" "messages" "conversations" "reports" "warnings")
 
 echo ""
 echo "📋 Backup các collections..."

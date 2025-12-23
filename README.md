@@ -35,361 +35,257 @@ Một nền tảng trực tuyến toàn diện cho phép sinh viên đăng ký, 
 - 🔍 **Quản lý báo cáo**: Xem và xử lý báo cáo vi phạm
 - 🔐 **Khóa/Mở tài khoản**: Khóa hoặc mở tài khoản sinh viên vi phạm
 - 📊 **Thống kê**: Theo dõi hoạt động trên nền tảng
-- 👥 **Quản lý người dùng**: Xem danh sách người dùng, thống kê hoạt động
 
-## 🛠️ Tech Stack
+# Student Marketplace — Hướng dẫn cài đặt & kiểm thử
 
-### Backend
+Phiên bản rút gọn và cập nhật của README cho dự án "Student Marketplace".
 
-- **Node.js & Express.js**: Server API
-- **MongoDB**: Cơ sở dữ liệu NoSQL
-- **JWT**: Xác thực người dùng
-- **Socket.io**: Chat real-time
-- **Nodemailer**: Gửi email xác thực
-- **Multer**: Upload hình ảnh
+> NOTE: Tính năng "Audit Logs" đã bị gỡ khỏi mã nguồn — các API, trang và hướng dẫn liên quan sẽ không còn hoạt động.
 
-### Frontend
+---
 
-- **React.js**: Giao diện người dùng
-- **React Router**: Điều hướng trang
-- **Axios**: Gọi API
-- **Socket.io-client**: Chat real-time
-- **Tailwind CSS**: Styling
-- **React Toastify**: Thông báo
-- **React Icons**: Biểu tượng
+## Mục lục
 
-### Database Schema
+- Giới thiệu
+- Yêu cầu hệ thống
+- Cấu trúc dự án
+- Cài đặt & chạy (Backend / Frontend)
+- Biến môi trường (mẫu)
+- Lệnh hữu ích
+- API chính & ví dụ
+- Hướng dẫn kiểm thử bằng Postman (Login, Create/Edit/Delete Post)
+- Xóa collection Audit (nếu cần)
+- Liên hệ
 
-#### NGUOI_DUNG (Users)
+---
 
-```javascript
-{
-  fullName,
-    email,
-    password,
-    role(student / admin),
-    studentId,
-    university,
-    major,
-    avatar,
-    bio,
-    isVerified,
-    verificationToken,
-    isActive,
-    lockReason,
-    lockedAt,
-    rating,
-    totalRatings,
-    postsCount;
-}
-```
+## Giới thiệu
 
-#### BAI_DANG (Posts)
+Một nền tảng trao đổi và mua bán đồ dùng học tập cho sinh viên, gồm backend bằng Node/Express + MongoDB và frontend bằng React.
 
-```javascript
-{
-  title,
-    description,
-    category,
-    postType(sell / exchange),
-    price,
-    condition,
-    images,
-    sellerId,
-    location,
-    status,
-    viewCount,
-    saveCount,
-    commentCount;
-}
-```
+---
 
-#### BINH_LUAN (Comments)
+## Yêu cầu hệ thống
 
-```javascript
-{
-  content, rating, postId, userId, targetUserId, isApproved, likes;
-}
-```
-
-#### BAO_CAO (Reports)
-
-```javascript
-{
-  title,
-    description,
-    reason,
-    reporterId,
-    postId,
-    reportedUserId,
-    evidence,
-    status,
-    adminId,
-    adminResponse,
-    action;
-}
-```
-
-#### TIN_NHAN (Messages)
-
-```javascript
-{
-  content, images, conversationId, senderId, isRead, readAt;
-}
-```
-
-## 📋 Yêu cầu hệ thống
-
-- Node.js v16+
-- MongoDB v4.4+
+- Node.js v16+ (LTS)
 - npm hoặc yarn
+- MongoDB (local) hoặc MongoDB Atlas
 
-## 🚀 Cài đặt & Chạy
+---
 
-### Backend
+## Cấu trúc dự án (tóm tắt)
+
+- `Backend/` — server Express, models, controllers, routes
+- `Frontent/` — React app (ghi chú tên thư mục giữ nguyên như trong repo)
+- `mongo-backup/` — chứa bản sao dữ liệu nếu có
+
+---
+
+## Cài đặt & chạy
+
+### 1) Backend
 
 ```bash
 cd Backend
 npm install
-
-# Tạo file .env từ .env.example
-cp .env.example .env
-
-# Cập nhật thông tin MongoDB, Email, JWT trong .env
-# Sau đó chạy:
+# Tạo file .env từ mẫu .env.example và cập nhật các biến cần thiết
+# Ví dụ: MONGODB_URI, JWT_SECRET, EMAIL_...
 npm run dev
 ```
 
-### Frontend
+Server mặc định chạy trên `http://localhost:5000`.
+
+### 2) Frontend
 
 ```bash
 cd Frontent
 npm install
-
-# Chạy development server
 npm start
-
-# Build for production
-npm run build
 ```
 
-## 📂 Cấu trúc thư mục
-
-```
-DACN/
-├── Backend/
-│   ├── models/          # Database schemas
-│   ├── routes/          # API routes
-│   ├── controllers/      # Route handlers (to be implemented)
-│   ├── middleware/      # Authentication & validation
-│   ├── utils/           # Helper functions
-│   ├── server.js        # Main server file
-│   ├── package.json
-│   └── .env.example
-│
-└── Frontent/
-    ├── public/          # Static files
-    ├── src/
-    │   ├── pages/       # Page components
-    │   ├── components/  # Reusable components
-    │   ├── services/    # API services
-    │   ├── redux/       # Redux store (to be implemented)
-    │   ├── hooks/       # Custom hooks
-    │   ├── App.js       # Main app component
-    │   └── index.js
-    └── package.json
-```
-
-## 🔌 API Endpoints
-
-### Auth
-
-- `POST /api/auth/register` - Đăng ký
-- `POST /api/auth/login` - Đăng nhập
-- `POST /api/auth/verify-email/:token` - Xác thực email
-- `POST /api/auth/logout` - Đăng xuất
-
-### Posts
-
-- `GET /api/posts` - Lấy danh sách bài đăng
-- `GET /api/posts/:id` - Chi tiết bài đăng
-- `POST /api/posts` - Tạo bài đăng (yêu cầu xác thực)
-- `PUT /api/posts/:id` - Cập nhật bài đăng
-- `DELETE /api/posts/:id` - Xóa bài đăng
-
-### Comments
-
-- `GET /api/comments/:postId` - Lấy bình luận
-- `POST /api/comments` - Tạo bình luận
-- `PUT /api/comments/:id` - Cập nhật bình luận
-- `DELETE /api/comments/:id` - Xóa bình luận
-
-### Reports
-
-- `GET /api/reports` - Lấy danh sách báo cáo (admin)
-- `POST /api/reports` - Tạo báo cáo
-- `PUT /api/reports/:id` - Cập nhật báo cáo (admin)
-
-### Messages
-
-- `GET /api/messages/conversations` - Lấy danh sách cuộc trò chuyện
-- `GET /api/messages/:conversationId` - Lấy tin nhắn
-- `POST /api/messages` - Gửi tin nhắn
-- `PUT /api/messages/:id/read` - Đánh dấu đã đọc
-
-## 📝 Ghi chú
-
-Dự án đã hoàn thành các tính năng chính:
-
-- ✅ Backend API đầy đủ với controllers, models, middleware
-- ✅ Frontend React với components, pages, routing
-- ✅ Database models với MongoDB
-- ✅ Authentication với JWT
-- ✅ Real-time chat với Socket.io
-- ✅ Upload hình ảnh với Multer
-- ✅ Email verification với Nodemailer
-- ✅ Admin panel với quản lý users, posts, reports
-- ✅ Docker deployment với MongoDB Atlas
+Frontend mặc định chạy trên `http://localhost:3000`.
 
 ---
 
-## 🐳 Đóng gói Docker
+## Biến môi trường (mẫu)
 
-### Khởi động nhanh:
+Tạo `Backend/.env` chứa ít nhất:
 
-```powershell
-# Khởi động với MongoDB Atlas (khuyên dùng)
-docker-compose up -d
-
-# Hoặc dùng script tự động
-.\docker-run-atlas.ps1
-```
-
-### Truy cập:
-
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:5000
-- **MongoDB:** Atlas Cloud
-
-### Quản lý:
-
-```powershell
-# Xem logs
-docker-compose logs -f
-
-# Dừng services
-docker-compose stop
-
-# Khởi động lại
-docker-compose restart
-
-# Xóa containers
-docker-compose down
-```
-
-📚 **Xem thêm:** `DOCKER_COMPLETE_GUIDE.md` cho hướng dẫn chi tiết
+- `MONGODB_URI` — connection string MongoDB
+- `PORT` — (ví dụ 5000)
+- `JWT_SECRET`
+- Email SMTP config nếu cần gửi mail
 
 ---
 
-## 📱 Truy cập từ Điện thoại (Ngrok)
+## Lệnh hữu ích
 
-### Cài đặt Ngrok:
+- Khởi động Docker (nếu cấu hình):
 
-1. Tải ngrok: https://ngrok.com/download
-2. Giải nén và copy vào thư mục dự án
-3. Đăng ký tài khoản: https://dashboard.ngrok.com/signup
-4. Cấu hình authtoken:
-
-```powershell
-ngrok config add-authtoken YOUR_AUTH_TOKEN
+```bash
+docker-compose up -d --build
 ```
 
-### Chạy Ngrok:
+- Backup dữ liệu (script có sẵn):
+
+Windows PowerShell:
 
 ```powershell
-# Cách 1: Dùng script tự động
-.\start-ngrok.ps1
-
-# Cách 2: Chạy thủ công
-ngrok http 3000
+.\backup-local-data.ps1
 ```
 
-### Cập nhật Backend:
+Bash:
 
-```powershell
-# Copy URL từ ngrok (ví dụ: https://abc123.ngrok-free.app)
-# Mở file .env và thêm:
-CLIENT_URL=https://abc123.ngrok-free.app
-FRONTEND_URL=https://abc123.ngrok-free.app
-
-# Restart backend
-docker-compose restart backend
+```bash
+./backup-local-data.sh
 ```
-
-### Truy cập từ điện thoại:
-
-- Mở trình duyệt trên điện thoại
-- Nhập URL: `https://abc123.ngrok-free.app`
-- Bấm "Visit Site" (lần đầu tiên)
-- Website hiển thị! 🎉
-
-📚 **Xem thêm:** `NGROK_GUIDE.md` cho hướng dẫn chi tiết
 
 ---
 
-## 📱 Responsive Design
+## API chính (tóm tắt)
 
-Website đã được tối ưu cho mọi thiết bị:
+Tài liệu dưới đây trình bày các endpoint quan trọng để test tính năng người dùng.
 
-### Breakpoints:
+Base URL (dev): `http://localhost:5000/api`
 
-- 📱 Mobile: < 640px
-- 📱 Tablet: 640px - 1024px
-- 💻 Desktop: > 1024px
+Auth
 
-### Tính năng responsive:
+- `POST /auth/register` — đăng ký
+- `POST /auth/login` — đăng nhập (trả về token JWT)
+- `POST /auth/logout` — đăng xuất
 
-- ✅ Navbar với hamburger menu trên mobile
-- ✅ Grid layout điều chỉnh tự động (1-2-3-4 cột)
-- ✅ Touch-friendly buttons (44x44px minimum)
-- ✅ Forms tối ưu cho mobile (font 16px+)
-- ✅ Images lazy load và responsive
-- ✅ Modal full screen trên mobile
-- ✅ Safe area insets cho iPhone X+
+Posts
 
-### Test responsive:
+- `GET /posts` — lấy danh sách
+- `GET /posts/:id` — xem chi tiết
+- `POST /posts` — tạo bài (yêu cầu Authorization)
+- `PUT /posts/:id` — cập nhật bài (yêu cầu Authorization)
+- `DELETE /posts/:id` — xóa bài (yêu cầu Authorization)
 
-```powershell
-# Chrome DevTools
-F12 → Toggle Device Toolbar (Ctrl+Shift+M)
+Comments, Reports, Users: tương tự — xem trong mã nguồn `Backend/routes` nếu cần chi tiết.
 
-# Test thực tế với Ngrok
-.\start-ngrok.ps1
-# Truy cập URL từ điện thoại
+---
+
+## Hướng dẫn kiểm thử bằng Postman
+
+Dưới đây là các bước cụ thể để kiểm thử tính năng cơ bản: đăng nhập, tạo bài, sửa bài, xóa bài.
+
+Chuẩn bị:
+
+- Mở Postman
+- Tạo environment (ví dụ `Local`) và thêm biến `baseUrl = http://localhost:5000/api` và biến `token` (để lưu JWT sau khi login)
+
+1.  Login (lấy token)
+
+- Method: POST
+- URL: `{{baseUrl}}/auth/login`
+- Body (JSON):
+
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
 ```
 
-📚 **Xem thêm:** `RESPONSIVE_DESIGN.md` cho hướng dẫn chi tiết
+- Tests (Postman) — lưu token tự động:
+
+```javascript
+// Trong tab Tests của request login
+const json = pm.response.json();
+if (json && json.token) {
+  pm.environment.set("token", json.token);
+}
+```
+
+- Sau khi chạy: kiểm tra `Environment` → biến `token` đã được set.
+
+2.  Tạo bài viết (Create Post)
+
+- Method: POST
+- URL: `{{baseUrl}}/posts`
+- Headers:
+  - `Authorization: Bearer {{token}}`
+  - (nếu gửi JSON) `Content-Type: application/json`
+- Body (JSON) ví dụ:
+
+```json
+{
+  "title": "Bán sách Lập trình C cơ bản",
+  "description": "Sách còn mới, 200 trang",
+  "category": "<categoryId>",
+  "postType": "sell",
+  "price": 100000,
+  "condition": "like_new"
+}
+```
+
+- Nếu API chấp nhận upload hình (multipart/form-data): chọn `form-data`, thêm field tương ứng `images` (type `file`) cùng các trường text.
+
+- Kết quả mong đợi: HTTP 201 với object bài đăng và `createdBy`/`_id`.
+
+- Lưu `postId` để dùng cho edit/delete (bạn có thể lưu vào environment: `pm.environment.set("postId", response.json().post._id)` trong Tests).
+
+3.  Chỉnh sửa bài viết (Edit Post)
+
+- Method: PUT
+- URL: `{{baseUrl}}/posts/{{postId}}`
+- Headers:
+  - `Authorization: Bearer {{token}}`
+  - `Content-Type: application/json`
+- Body (JSON) ví dụ:
+
+```json
+{
+  "title": "Bán sách Lập trình C - cập nhật",
+  "price": 90000
+}
+```
+
+- Kết quả mong đợi: HTTP 200 và object bài đã được cập nhật.
+
+4.  Xóa bài viết (Delete Post)
+
+- Method: DELETE
+- URL: `{{baseUrl}}/posts/{{postId}}`
+- Headers:
+
+  - `Authorization: Bearer {{token}}`
+
+- Kết quả mong đợi: HTTP 200 và thông báo thành công.
+
+5.  Các lưu ý khi kiểm thử
+
+- Đảm bảo `token` được set trước khi gọi các API cần xác thực.
+- Nếu gặp lỗi 401/403: kiểm tra token còn hiệu lực hay user có quyền thao tác (owner/admin).
+- Kiểm tra response body để biết cấu trúc lỗi (thường trả về `thành_công: false` và `tin_nhan`).
 
 ---
 
-## 👥 Đóng góp
+## Xóa collection Audit (nếu còn tồn tại)
 
-Dự án này được phát triển cho mục đích học tập.
+Nếu trước đó có collection audit lưu trữ trong Mongo và bạn muốn xoá hoàn toàn (ví dụ tên collection là `auditlogs`), chạy lệnh trên Mongo shell:
 
-## 📄 Giấy phép
+```js
+use nha-cho-sinh-vien
+db.getCollection('auditlogs').drop()
+// Hoặc tùy tên collection, ví dụ 'auditlogs' / 'audit_logs'...
+```
 
-MIT License
-
-MIT License
-
-## 📧 Liên hệ
-
-Nếu bạn có câu hỏi hoặc gợi ý, vui lòng liên hệ.
+Hoặc dùng MongoDB Compass để xóa collection.
 
 ---
 
-**Phiên bản**: 1.0.0  
-**Cập nhật lần cuối**: November 2024
-#   S t u d e n t - L e a r n i n g - S u p p l i e s - M a r k e t p l a c e 
- 
- 
+## Ghi chú quan trọng
+
+- Các file liên quan đến Audit Logs đã được gỡ hoặc chuyển thành stub để tránh làm hỏng hệ thống. Nếu bạn muốn khôi phục tính năng Audit Logs, cần thảo luận về cách triển khai lại và bảng schema trong MongoDB.
+
+---
+
+## Liên hệ
+
+Nếu cần hỗ trợ thêm hoặc muốn tôi thực hiện xóa vật lý file/thu mục còn sót và commit thay đổi, cho biết — tôi sẽ thực hiện tiếp.
+
+---
+
+**Phiên bản README:** cập nhật tự động

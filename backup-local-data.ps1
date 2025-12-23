@@ -15,7 +15,7 @@ if (!(Test-Path $BACKUP_DIR)) {
 }
 
 # Danh sách collections cần backup
-$collections = @("users", "posts", "comments", "messages", "conversations", "reports", "warnings", "auditlogs")
+$collections = @("users", "posts", "comments", "messages", "conversations", "reports", "warnings")
 
 Write-Host "`n📋 Backup các collections..." -ForegroundColor Yellow
 

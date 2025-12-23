@@ -7,6 +7,9 @@ import {
   FaExclamationTriangle,
   FaUsers,
   FaSignOutAlt,
+  FaTags,
+  FaFileAlt,
+  FaFilter,
 } from "react-icons/fa";
 
 const AdminSidebar = ({ isOpen, onClose }) => {
@@ -22,6 +25,10 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       icon: <FaExclamationTriangle />,
     },
     { path: "/admin/users", label: "Người dùng", icon: <FaUsers /> },
+    { path: "/admin/categories", label: "Danh mục", icon: <FaTags /> },
+    { path: "/admin/post-types", label: "Loại bài đăng", icon: <FaFileAlt /> },
+    { path: "/admin/filters", label: "Bộ lọc", icon: <FaFilter /> },
+    // Audit logs menu removed
   ];
 
   const handleLogout = () => {

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaSearch, FaBars, FaChevronDown } from "react-icons/fa";
 import PostCard from "../components/PostCard";
 import FilterSidebar from "../components/FilterSidebar";
+import BannerSlideshow from "../components/BannerSlideshow";
 import { postAPI } from "../services/apiService";
 import { toast } from "react-toastify";
 
@@ -200,45 +201,24 @@ const Home = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-x-hidden">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 text-white py-24 relative">
-          {/* Animated background elements */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl animate-pulse delay-700"></div>
-            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-300 opacity-10 rounded-full blur-2xl animate-pulse delay-1000"></div>
-          </div>
+        {/* Banner Slideshow */}
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <BannerSlideshow />
+        </div>
 
-          <div className="max-w-7xl mx-auto px-4 relative z-10">
-            <div className="text-center mb-12">
-              <div className="inline-block mb-4 px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
-                ✨ Nền tảng mua bán đồ sinh viên #1
-              </div>
-              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 drop-shadow-lg">
-                🎓 Chợ Sinh Viên
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-50 max-w-3xl mx-auto font-medium leading-relaxed">
-                Nơi sinh viên mua bán, trao đổi đồ cũ
-                <br />
-                💙 Tiết kiệm - An toàn - Nhanh chóng
-              </p>
-            </div>
-
-            {/* Mobile Filter Button */}
-            <div className="flex justify-center gap-4 lg:hidden">
-              <button
-                onClick={() => setShowFilterSidebar(true)}
-                className="bg-white/90 backdrop-blur hover:bg-white hover:scale-105 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-lg flex items-center gap-3 transition-all duration-300 hover:shadow-2xl border border-white/50"
-              >
-                <FaBars className="text-blue-500" />
-                <span>Bộ lọc</span>
-              </button>
-            </div>
-          </div>
+        {/* Mobile Filter Button */}
+        <div className="max-w-7xl mx-auto px-4 mb-6 lg:hidden">
+          <button
+            onClick={() => setShowFilterSidebar(true)}
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-2xl"
+          >
+            <FaBars />
+            <span>Mở bộ lọc</span>
+          </button>
         </div>
 
         {/* Posts Grid */}
-        <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           {loading ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin shadow-lg"></div>

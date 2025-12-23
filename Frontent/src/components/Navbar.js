@@ -117,9 +117,13 @@ const Navbar = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
-            <div className="text-3xl">🎓</div>
+            <img
+              src="/images/logo.jpg"
+              alt="Logo"
+              className="w-10 h-10 object-contain rounded-full"
+            />
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Chợ Sinh Viên
+              Chợ đồ cũ sinh viên
             </span>
           </Link>
 

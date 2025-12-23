@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authAPI } from "../services/apiService";
+import {
+  MdPerson,
+  MdEmail,
+  MdLock,
+  MdSchool,
+  MdBook,
+  MdClose,
+  MdPersonAdd,
+} from "react-icons/md";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -62,59 +71,43 @@ const Register = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-purple-900/95 via-pink-900/90 to-indigo-900/95 flex items-center justify-center py-12 px-4 z-50 backdrop-blur-md overflow-y-auto">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '4s' }}></div>
-      </div>
-
-      <div className="w-full max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-10 z-10 relative transform transition-all duration-300 hover:shadow-purple-500/20 border border-white/20 my-8">
+    <div className="fixed inset-0 bg-gray-100 flex items-center justify-center py-4 px-4 z-[200] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 relative border border-gray-200 my-4">
         {/* Close Button */}
         <button
           onClick={() => navigate("/")}
-          className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 transition-all duration-200 hover:rotate-90 z-20 group"
+          className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-red-500 text-gray-600 hover:text-white transition-all duration-200 z-20"
           title="Đóng"
         >
-          <svg
-            className="w-5 h-5 transition-transform group-hover:scale-110"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <MdClose className="w-6 h-6" />
         </button>
 
         {/* Logo / Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-600 rounded-2xl mb-4 shadow-lg transform hover:scale-110 hover:rotate-6 transition-all duration-300">
-            <span className="text-5xl">✍️</span>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mb-3 shadow-lg">
+            <MdPersonAdd className="text-4xl text-white" />
           </div>
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">
             Tạo tài khoản mới
           </h1>
-          <p className="text-gray-500 text-sm">Tham gia cộng đồng Chợ Sinh Viên</p>
+          <p className="text-gray-500 text-sm">
+            Tham gia cộng đồng Chợ Sinh Viên
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2.5">
           {/* Full Name */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2 text-sm">
-              👤 Họ tên
+            <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+              <MdPerson className="text-purple-600" />
+              Họ tên
             </label>
             <input
               type="text"
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+              className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
               placeholder="Nhập họ tên đầy đủ"
               required
             />
@@ -122,32 +115,34 @@ const Register = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2 text-sm">
-              📧 Email
+            <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+              <MdEmail className="text-purple-600" />
+              Email
             </label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+              className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
               placeholder="email@example.com"
               required
             />
           </div>
 
           {/* University & Major - 2 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             {/* University */}
             <div>
-              <label className="block text-gray-700 font-bold mb-2 text-sm">
-                🏫 Trường
+              <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+                <MdSchool className="text-purple-600" />
+                Trường
               </label>
               <select
                 name="university"
                 value={formData.university}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+                className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
               >
                 <option value="">Chọn trường</option>
                 <option value="Đại học Bách Khoa">Bách Khoa</option>
@@ -159,15 +154,16 @@ const Register = () => {
 
             {/* Major */}
             <div>
-              <label className="block text-gray-700 font-bold mb-2 text-sm">
-                📚 Ngành
+              <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+                <MdBook className="text-purple-600" />
+                Ngành
               </label>
               <input
                 type="text"
                 name="major"
                 value={formData.major}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+                className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
                 placeholder="Ngành học"
                 required
               />
@@ -176,15 +172,16 @@ const Register = () => {
 
           {/* Password */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2 text-sm">
-              🔐 Mật khẩu
+            <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+              <MdLock className="text-purple-600" />
+              Mật khẩu
             </label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+              className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
               placeholder="Tối thiểu 6 ký tự"
               required
             />
@@ -192,15 +189,16 @@ const Register = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2 text-sm">
-              🔒 Xác nhận mật khẩu
+            <label className="block text-gray-700 font-semibold mb-1.5 text-sm flex items-center gap-1.5">
+              <MdLock className="text-purple-600" />
+              Xác nhận mật khẩu
             </label>
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-gray-50 hover:bg-white text-gray-800 font-medium"
+              className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-gray-800 text-sm"
               placeholder="Nhập lại mật khẩu"
               required
             />
@@ -210,27 +208,46 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white py-4 rounded-xl font-bold text-base hover:shadow-2xl hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] mt-6"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold text-base shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 mt-4 flex items-center justify-center gap-2"
           >
             {loading ? (
-              <span className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <span className="flex items-center justify-center gap-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Đang xử lý...
               </span>
             ) : (
-              "Đăng ký ngay"
+              <>
+                <MdPersonAdd className="w-5 h-5" />
+                Đăng ký ngay
+              </>
             )}
           </button>
         </form>
 
         {/* Divider */}
-        <div className="my-6 flex items-center">
-          <div className="flex-1 border-t-2 border-gray-200"></div>
-          <span className="px-4 text-gray-400 text-sm font-medium">hoặc</span>
-          <div className="flex-1 border-t-2 border-gray-200"></div>
+        <div className="my-5 flex items-center">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-4 text-gray-500 text-sm">hoặc</span>
+          <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
         {/* Login Link */}
@@ -239,7 +256,7 @@ const Register = () => {
             Đã có tài khoản?{" "}
             <a
               href="/login"
-              className="text-purple-600 font-bold hover:text-purple-700 hover:underline transition-colors"
+              className="text-purple-600 font-semibold hover:text-purple-700 hover:underline transition-colors"
             >
               Đăng nhập ngay
             </a>

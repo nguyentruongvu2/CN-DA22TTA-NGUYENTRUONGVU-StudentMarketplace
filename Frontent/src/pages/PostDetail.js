@@ -271,6 +271,13 @@ const PostDetail = () => {
       return;
     }
 
+    // Kiểm tra nếu chọn "Khác" thì bắt buộc phải nhập mô tả
+    if (reportData.reason === "khac" && !reportData.description.trim()) {
+      console.log("Lỗi: Chọn lý do 'Khác' nhưng chưa nhập mô tả");
+      toast.error("⚠️ Vui lòng mô tả chi tiết lý do báo cáo");
+      return;
+    }
+
     try {
       let payload = {
         reason: reportData.reason.trim(),
@@ -374,17 +381,24 @@ const PostDetail = () => {
           {post.images && post.images.length > 0 ? (
             <div className="space-y-4">
               {post.images.map((image, index) => (
-                <img
+                <div
                   key={index}
-                  src={image}
-                  alt={`${post.title} - Hình ${index + 1}`}
-                  className="w-full h-96 object-cover rounded-lg shadow-lg"
-                  onError={(e) => {
-                    console.error("Image load error:", image);
-                    e.target.src =
-                      "https://via.placeholder.com/800x600?text=Không+thể+tải+ảnh";
-                  }}
-                />
+                  className="w-full bg-gray-100 rounded-lg shadow-lg overflow-hidden flex items-center justify-center"
+                  style={{ minHeight: "400px", maxHeight: "600px" }}
+                >
+                  <img
+                    src={image}
+                    alt={`${post.title} - Hình ${index + 1}`}
+                    className="w-full h-full object-contain cursor-pointer hover:opacity-90 transition"
+                    style={{ maxHeight: "600px" }}
+                    onClick={() => window.open(image, "_blank")}
+                    onError={(e) => {
+                      console.error("Image load error:", image);
+                      e.target.src =
+                        "https://via.placeholder.com/800x600?text=Không+thể+tải+ảnh";
+                    }}
+                  />
+                </div>
               ))}
             </div>
           ) : (
@@ -611,22 +625,28 @@ const PostDetail = () => {
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-red-500"
               >
                 <option value="">-- Chọn lý do --</option>
-                <option value="spam">Spam</option>
+                <option value="spam">🚫 Spam</option>
                 <option value="noi_dung_khong_phu_hop">
-                  Nội dung không phù hợp
+                  ⚠️ Nội dung không phù hợp
                 </option>
-                <option value="lua_dao">Lừa đảo</option>
-                <option value="thong_tin_sai_lech">Thông tin sai lệch</option>
-                <option value="ngon_tu_tho_tuc">Ngôn từ thô tục</option>
-                <option value="quay_roi">Quấy rối</option>
-                <option value="khac">Khác</option>
+                <option value="lua_dao">💰 Lừa đảo</option>
+                <option value="thong_tin_sai_lech">
+                  📢 Thông tin sai lệch
+                </option>
+                <option value="ngon_tu_tho_tuc">🤬 Ngôn từ thô tục</option>
+                <option value="quay_roi">😠 Quấy rối</option>
+                <option value="khac">📝 Khác (vui lòng mô tả)</option>
               </select>
             </div>
 
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Mô tả chi tiết{" "}
-                <span className="text-gray-400 text-xs">(Tùy chọn)</span>
+                {reportData.reason === "khac" ? (
+                  <span className="text-red-500">*</span>
+                ) : (
+                  <span className="text-gray-400 text-xs">(Tùy chọn)</span>
+                )}
               </label>
               <textarea
                 value={reportData.description}
@@ -635,7 +655,12 @@ const PostDetail = () => {
                 }
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-red-500 resize-none"
                 rows="4"
-                placeholder="Mô tả chi tiết về vi phạm (không bắt buộc)..."
+                placeholder={
+                  reportData.reason === "khac"
+                    ? "Vui lòng mô tả chi tiết lý do báo cáo..."
+                    : "Mô tả chi tiết về vi phạm (không bắt buộc)..."
+                }
+                required={reportData.reason === "khac"}
               />
             </div>
 
