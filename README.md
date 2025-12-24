@@ -1,4 +1,4 @@
-# 🎓 Student Marketplace - Hệ thống Trao đổi & Bán Dụng cụ Học tập
+# 🎓 Student Marketplace - Hệ thống Trao đổi và Bán Dụng cụ Học tập dành cho sinh viên
 
 Một nền tảng trực tuyến toàn diện cho phép sinh viên đăng ký, đăng nhập bằng email sinh viên hợp lệ, tạo và quản lý các bài đăng bán hoặc trao đổi dụng cụ học tập.
 
@@ -37,12 +37,6 @@ Một nền tảng trực tuyến toàn diện cho phép sinh viên đăng ký, 
 - 📊 **Thống kê**: Theo dõi hoạt động trên nền tảng
 
 # Student Marketplace — Hướng dẫn cài đặt & kiểm thử
-
-Phiên bản rút gọn và cập nhật của README cho dự án "Student Marketplace".
-
-> NOTE: Tính năng "Audit Logs" đã bị gỡ khỏi mã nguồn — các API, trang và hướng dẫn liên quan sẽ không còn hoạt động.
-
----
 
 ## Mục lục
 
@@ -136,11 +130,8 @@ Windows PowerShell:
 
 Bash:
 
-```bash
+````bash
 ./backup-local-data.sh
-```
-
----
 
 ## API chính (tóm tắt)
 
@@ -186,7 +177,7 @@ Chuẩn bị:
   "email": "user@example.com",
   "password": "password123"
 }
-```
+````
 
 - Tests (Postman) — lưu token tự động:
 
@@ -259,33 +250,5 @@ if (json && json.token) {
 - Đảm bảo `token` được set trước khi gọi các API cần xác thực.
 - Nếu gặp lỗi 401/403: kiểm tra token còn hiệu lực hay user có quyền thao tác (owner/admin).
 - Kiểm tra response body để biết cấu trúc lỗi (thường trả về `thành_công: false` và `tin_nhan`).
-
----
-
-## Xóa collection Audit (nếu còn tồn tại)
-
-Nếu trước đó có collection audit lưu trữ trong Mongo và bạn muốn xoá hoàn toàn (ví dụ tên collection là `auditlogs`), chạy lệnh trên Mongo shell:
-
-```js
-use nha-cho-sinh-vien
-db.getCollection('auditlogs').drop()
-// Hoặc tùy tên collection, ví dụ 'auditlogs' / 'audit_logs'...
-```
-
-Hoặc dùng MongoDB Compass để xóa collection.
-
----
-
-## Ghi chú quan trọng
-
-- Các file liên quan đến Audit Logs đã được gỡ hoặc chuyển thành stub để tránh làm hỏng hệ thống. Nếu bạn muốn khôi phục tính năng Audit Logs, cần thảo luận về cách triển khai lại và bảng schema trong MongoDB.
-
----
-
-## Liên hệ
-
-Nếu cần hỗ trợ thêm hoặc muốn tôi thực hiện xóa vật lý file/thu mục còn sót và commit thay đổi, cho biết — tôi sẽ thực hiện tiếp.
-
----
 
 **Phiên bản README:** cập nhật tự động
