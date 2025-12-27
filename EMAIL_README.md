@@ -38,15 +38,15 @@ Xem file `EMAIL_TROUBLESHOOTING.md` để biết thêm chi tiết về:
 
 ---
 
-## ⚙️ Config hiện tại
+## ⚙️ Config mẫu
 
 Backend `.env`:
 
 ```
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=nguyentruongvu2023@gmail.com
-EMAIL_PASSWORD=mzya gvlt mwix qywr
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password_here
 FRONTEND_URL=http://localhost:3000  # Đổi thành IP LAN nếu cần
 ```
 
